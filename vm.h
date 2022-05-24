@@ -51,5 +51,7 @@ int vm_stack_push(VM* self, const char* bytes, size_t count);
 int vm_stack_pop(VM* self, char* dst, size_t count);
 OP_Err vm_run(VM* self);
 
+uint64_t bytes_to_int(const char* bytes, uint8_t len);
+
 
 #endif //THECUBE_VM_H

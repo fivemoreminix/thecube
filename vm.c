@@ -7,7 +7,8 @@
 uint64_t bytes_to_int(const char* bytes, uint8_t len) {
     uint64_t result = 0;
     for (uint8_t i = 0; i < len; i++) {
-        result |= (uint64_t)bytes[i] << (len-i-1);
+        unsigned char c = bytes[len-i-1];
+        result |= (uint64_t)c << 8*i;
     }
     return result;
 }

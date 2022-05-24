@@ -3,9 +3,9 @@
 #include "stdio.h"
 
 #define PROG_SIZE 3
-static char PROGRAM[PROG_SIZE] = {0x7, 'A', 0xA};
+static char PROGRAM[PROG_SIZE] = {0x7, 'Z', 0xA};
 
-int main() {
+int main(int argc, char* argv[argc+1]) {
     VM* vm = vm_init(100);
     vm_set_program(vm, PROGRAM, PROG_SIZE, 0);
 
