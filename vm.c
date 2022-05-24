@@ -111,30 +111,44 @@ OP_Err vm_run(VM *self) {
             case OP_NOP:
                 break;
             case OP_LOD_BYTE:
-                vm_stack_pop(self, buf, 4);
+                if (vm_stack_pop(self, buf, 4)) {
+                    return OPERR_STACK_UNDERFULL;
+                }
                 addr = bytes_to_int(buf, 4);
                 if (addr >= self->mem_size) {
                     return OPERR_READ_OOB;
                 }
-                vm_stack_push(self, &self->mem[addr], 1);
+                if (vm_stack_push(self, &self->mem[addr], 1)) {
+                    return OPERR_STACK_OVERFULL;
+                }
                 break;
-            case OP_STO_BYTE: // TODO: vm_stack_push / _pop returns code
-                vm_stack_pop(self, buf, 4);
+            case OP_STO_BYTE:
+                if (vm_stack_pop(self, buf, 4)) {
+                    return OPERR_STACK_UNDERFULL;
+                }
                 addr = bytes_to_int(buf, 4);
                 if (addr >= self->mem_size) {
                     return OPERR_WRITE_OOB;
                 }
-                vm_stack_pop(self, buf, 1);
+                if (vm_stack_pop(self, buf, 1)) {
+                    return OPERR_STACK_UNDERFULL;
+                }
                 self->mem[addr] = buf[0];
                 break;
             case OP_PUSH_BYTE:
-                vm_stack_push(self, op.arg, 1);
+                if (vm_stack_push(self, op.arg, 1)) {
+                    return OPERR_STACK_OVERFULL;
+                }
                 break;
             case OP_PUSH_I32:
-                vm_stack_push(self, op.arg, 4);
+                if (vm_stack_push(self, op.arg, 4)) {
+                    return OPERR_STACK_OVERFULL;
+                }
                 break;
             case OP_PRINT_CHAR: {
-                vm_stack_pop(self, buf, 1);
+                if (vm_stack_pop(self, buf, 1)) {
+                    return OPERR_STACK_UNDERFULL;
+                }
                 putchar(buf[0]);
                 break;
             }

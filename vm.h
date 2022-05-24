@@ -31,6 +31,8 @@ typedef enum {
     OPERR_UNHANDLED_OP,
     OPERR_READ_OOB,
     OPERR_WRITE_OOB,
+    OPERR_STACK_OVERFULL,
+    OPERR_STACK_UNDERFULL,
 } OP_Err;
 
 typedef struct {
